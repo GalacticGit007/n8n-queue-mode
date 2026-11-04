@@ -1,0 +1,30 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: n8n-db
+  namespace: default
+spec:
+  instances: 1
+
+  imageName: ghcr.io/cloudnative-pg/postgresql:17.11-system-trixie
+
+  storage:
+    storageClass: local-path
+    size: 5Gi
+
+  managed:
+    roles:
+      - name: n8n
+        ensure: present
+        login: true
+        passwordSecret:
+          name: n8n-db-credentials
+
+  bootstrap:
+    initdb:
+      database: n8n
+      owner: n8n
+      secret:
+        name: n8n-db-credentials
+
+  enableSuperuserAccess: false
