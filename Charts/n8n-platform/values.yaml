@@ -41,7 +41,7 @@ n8n:
   timezone: UTC
   executionsMode: queue
   database:
-    host: n8n-db-cluster-rw
+    host: n8n-db-rw
     port: 5432
     name: n8n
     sslEnabled: false
