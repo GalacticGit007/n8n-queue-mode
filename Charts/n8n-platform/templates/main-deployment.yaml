@@ -23,7 +23,7 @@ spec:
     spec:
       containers:
         - name: n8n
-          image: "{{ .Values.image.repository }}:{{ required "Set image.tag to an explicit tested n8n version" .Values.image.tag }}"
+          image: {{ required "Set image.reference to an explicit n8n image reference" .Values.image.reference | quote }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
@@ -68,7 +68,6 @@ spec:
                 secretKeyRef:
                   name: {{ .Values.existingSecret }}
                   key: {{ .Values.secretKeys.redisPassword }}
-                  optional: true
             - name: QUEUE_BULL_REDIS_TLS
               value: {{ .Values.n8n.redis.tls | quote }}
             - name: DB_POSTGRESDB_SSL_ENABLED
