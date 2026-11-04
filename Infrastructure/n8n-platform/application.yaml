@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: n8n-platform
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/GalacticGit007/n8n-queue-mode.git
+    targetRevision: main
+    path: Charts/n8n-platform
+    helm:
+      valueFiles:
+        - values.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  syncPolicy:
+    automated:
+      enabled: false
+      prune: true
+      selfHeal: false
