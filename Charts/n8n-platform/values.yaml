@@ -1,0 +1,67 @@
+# Starter values only. Set an explicit, tested n8n image tag before deployment.
+image:
+  repository: n8nio/n8n
+  tag: ""
+  pullPolicy: IfNotPresent
+
+nameOverride: ""
+fullnameOverride: ""
+
+main:
+  replicaCount: 1
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      memory: 1Gi
+
+worker:
+  replicaCount: 1
+  concurrency: 5
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      memory: 1Gi
+
+service:
+  type: ClusterIP
+  port: 5678
+
+# Configure the actual ingress/TLS approach after the cluster environment is confirmed.
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+  hosts: []
+  tls: []
+
+n8n:
+  timezone: UTC
+  executionsMode: queue
+  database:
+    host: n8n-db-cluster-rw
+    port: 5432
+    name: n8n
+    sslEnabled: false
+  redis:
+    host: redis
+    port: 6379
+    database: 0
+    tls: false
+
+# Secret objects must be created by the chosen secret-management workflow.
+# Do not put secret values in this file or commit plaintext secrets to Git.
+existingSecret: n8n-runtime-secrets
+secretKeys:
+  databaseUsername: db-username
+  databasePassword: db-password
+  encryptionKey: encryption-key
+  redisPassword: redis-password
+
+podAnnotations: {}
+nodeSelector: {}
+tolerations: []
+affinity: {}

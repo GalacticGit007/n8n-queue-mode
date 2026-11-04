@@ -1,0 +1,82 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "n8n-platform.fullname" . }}-worker
+  labels:
+    {{- include "n8n-platform.labels" . | nindent 4 }}
+    app.kubernetes.io/component: worker
+spec:
+  replicas: {{ .Values.worker.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: {{ .Release.Name }}
+      app.kubernetes.io/component: worker
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        app.kubernetes.io/component: worker
+    spec:
+      containers:
+        - name: n8n-worker
+          image: "{{ .Values.image.repository }}:{{ required "Set image.tag to an explicit tested n8n version" .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args: ["worker", "--concurrency={{ .Values.worker.concurrency }}"]
+          env:
+            - name: EXECUTIONS_MODE
+              value: {{ .Values.n8n.executionsMode | quote }}
+            - name: GENERIC_TIMEZONE
+              value: {{ .Values.n8n.timezone | quote }}
+            - name: DB_TYPE
+              value: postgresdb
+            - name: DB_POSTGRESDB_HOST
+              value: {{ .Values.n8n.database.host | quote }}
+            - name: DB_POSTGRESDB_PORT
+              value: {{ .Values.n8n.database.port | quote }}
+            - name: DB_POSTGRESDB_DATABASE
+              value: {{ .Values.n8n.database.name | quote }}
+            - name: DB_POSTGRESDB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.existingSecret }}
+                  key: {{ .Values.secretKeys.databaseUsername }}
+            - name: DB_POSTGRESDB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.existingSecret }}
+                  key: {{ .Values.secretKeys.databasePassword }}
+            - name: N8N_ENCRYPTION_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.existingSecret }}
+                  key: {{ .Values.secretKeys.encryptionKey }}
+            - name: QUEUE_BULL_REDIS_HOST
+              value: {{ .Values.n8n.redis.host | quote }}
+            - name: QUEUE_BULL_REDIS_PORT
+              value: {{ .Values.n8n.redis.port | quote }}
+            - name: QUEUE_BULL_REDIS_DB
+              value: {{ .Values.n8n.redis.database | quote }}
+            - name: QUEUE_BULL_REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.existingSecret }}
+                  key: {{ .Values.secretKeys.redisPassword }}
+                  optional: true
+            - name: QUEUE_BULL_REDIS_TLS
+              value: {{ .Values.n8n.redis.tls | quote }}
+            - name: DB_POSTGRESDB_SSL_ENABLED
+              value: {{ .Values.n8n.database.sslEnabled | quote }}
+          resources:
+            {{- toYaml .Values.worker.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
