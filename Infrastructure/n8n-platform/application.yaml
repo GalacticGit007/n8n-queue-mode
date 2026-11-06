@@ -7,7 +7,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/GalacticGit007/n8n-queue-mode.git
-    targetRevision: main
+    targetRevision: deploy
     path: Charts/n8n-platform
     helm:
       valueFiles:
