@@ -12,6 +12,12 @@ spec:
     storageClass: local-path
     size: 5Gi
 
+  plugins:
+    - name: barman-cloud.cloudnative-pg.io
+      isWALArchiver: true
+      parameters:
+        barmanObjectName: n8n-db-s3
+
   managed:
     roles:
       - name: n8n
