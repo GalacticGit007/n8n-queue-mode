@@ -34,6 +34,8 @@ spec:
               value: {{ .Values.n8n.executionsMode | quote }}
             - name: GENERIC_TIMEZONE
               value: {{ .Values.n8n.timezone | quote }}
+            - name: OFFLOAD_MANUAL_EXECUTIONS_TO_WORKERS
+              value: "{{ .Values.n8n.offloadManualExecutionsToWorkers }}"
             - name: DB_TYPE
               value: postgresdb
             - name: DB_POSTGRESDB_HOST

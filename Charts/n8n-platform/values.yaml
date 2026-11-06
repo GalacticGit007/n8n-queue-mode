@@ -40,11 +40,14 @@ ingress:
 n8n:
   timezone: UTC
   executionsMode: queue
+  offloadManualExecutionsToWorkers: true
+
   database:
     host: n8n-db-rw
     port: 5432
     name: n8n
     sslEnabled: false
+
   redis:
     host: redis
     port: 6379
