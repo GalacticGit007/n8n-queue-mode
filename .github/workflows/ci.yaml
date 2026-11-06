@@ -63,7 +63,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: gitleaks/gitleaks-action@v3
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
