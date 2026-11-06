@@ -41,6 +41,21 @@ jobs:
       - name: Validate Redis manifests
         run: |
           kubectl kustomize Infrastructure/redis
+  trivy:
+    name: Trivy Security Scan
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Run Trivy filesystem scan
+        uses: aquasecurity/trivy-action@0.33.1
+        with:
+          scan-type: fs
+          scan-ref: .
+          severity: HIGH,CRITICAL
+          ignore-unfixed: true
 
   gitleaks:
     name: Secret Scan
@@ -48,7 +63,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: gitleaks/gitleaks-action@v2
         with:
           fetch-depth: 0
 
