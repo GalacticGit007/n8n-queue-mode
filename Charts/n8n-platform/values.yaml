@@ -42,6 +42,9 @@ n8n:
   executionsMode: queue
   offloadManualExecutionsToWorkers: true
 
+  taskRunner:
+    mode: external
+
   database:
     host: n8n-db-rw
     port: 5432
