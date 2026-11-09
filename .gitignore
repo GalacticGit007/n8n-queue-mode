@@ -4,4 +4,5 @@ keys.txt
 *.key
 *.plain.*
 /dr/src/*
+Tests-and-reports/*
 
