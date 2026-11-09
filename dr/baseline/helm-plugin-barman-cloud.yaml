@@ -1,0 +1,63 @@
+additionalArgs: []
+additionalEnv: []
+affinity: {}
+certificate:
+  createClientCertificate: true
+  createIssuer: true
+  createServerCertificate: true
+  duration: 2160h
+  issuerName: ""
+  renewBefore: 360h
+commonAnnotations: {}
+containerSecurityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+    - ALL
+  readOnlyRootFilesystem: true
+  runAsGroup: 10001
+  runAsUser: 10001
+  seccompProfile:
+    type: RuntimeDefault
+crds:
+  create: true
+dnsPolicy: ""
+fullnameOverride: ""
+hostNetwork: false
+image:
+  pullPolicy: IfNotPresent
+  registry: ghcr.io
+  repository: cloudnative-pg/plugin-barman-cloud
+  tag: ""
+imagePullSecrets: []
+logLevel: info
+nameOverride: ""
+namespaceOverride: ""
+nodeSelector: {}
+podAnnotations: {}
+podLabels: {}
+podSecurityContext:
+  runAsNonRoot: true
+  seccompProfile:
+    type: RuntimeDefault
+priorityClassName: ""
+rbac:
+  cnpgGroup: postgresql.cnpg.io
+  create: true
+replicaCount: 1
+resources: {}
+service:
+  ipFamilies: []
+  ipFamilyPolicy: ""
+  name: barman-cloud
+  port: 9090
+serviceAccount:
+  create: true
+  name: ""
+sidecarImage:
+  registry: ghcr.io
+  repository: cloudnative-pg/plugin-barman-cloud-sidecar
+  tag: ""
+tolerations: []
+topologySpreadConstraints: []
+updateStrategy: {}

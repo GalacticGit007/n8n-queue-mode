@@ -1,0 +1,15 @@
+apiVersion: barmancloud.cnpg.io/v1
+kind: ObjectStore
+metadata:
+  name: n8n-db-restore-s3
+  namespace: default
+spec:
+  configuration:
+    destinationPath: s3://n8n-dr-backups-20261023-8f039112/n8n-db/
+    s3Credentials:
+      accessKeyId:
+        name: n8n-db-restore-s3
+        key: ACCESS_KEY_ID
+      secretAccessKey:
+        name: n8n-db-restore-s3
+        key: ACCESS_SECRET_KEY
