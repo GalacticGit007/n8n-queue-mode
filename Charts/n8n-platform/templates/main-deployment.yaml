@@ -36,6 +36,18 @@ spec:
               value: {{ .Values.n8n.timezone | quote }}
             - name: OFFLOAD_MANUAL_EXECUTIONS_TO_WORKERS
               value: "{{ .Values.n8n.offloadManualExecutionsToWorkers }}"
+            {{- if .Values.n8n.publicUrl }}
+            - name: N8N_HOST
+              value: {{ .Values.n8n.host | quote }}
+            - name: N8N_PROTOCOL
+              value: {{ .Values.n8n.protocol | quote }}
+            - name: WEBHOOK_URL
+              value: {{ printf "%s/" (trimSuffix "/" .Values.n8n.publicUrl) | quote }}
+            - name: N8N_EDITOR_BASE_URL
+              value: {{ .Values.n8n.publicUrl | quote }}
+            - name: N8N_SECURE_COOKIE
+              value: {{ .Values.n8n.secureCookie | quote }}
+            {{- end }}
             - name: DB_TYPE
               value: postgresdb
             - name: DB_POSTGRESDB_HOST

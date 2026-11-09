@@ -31,14 +31,23 @@ service:
 
 # Configure the actual ingress/TLS approach after the cluster environment is confirmed.
 ingress:
-  enabled: false
-  className: ""
+  enabled: true
+  className: traefik
   annotations: {}
-  hosts: []
+  hosts:
+    - host: n8n.lab.local
+      paths:
+        - path: /
+          pathType: Prefix
   tls: []
 
 n8n:
   timezone: UTC
+  # Lab: plain http behind Traefik. Move to https and set secureCookie: true later.
+  host: n8n.lab.local
+  protocol: http
+  publicUrl: "http://n8n.lab.local"
+  secureCookie: false
   executionsMode: queue
   offloadManualExecutionsToWorkers: true
 
