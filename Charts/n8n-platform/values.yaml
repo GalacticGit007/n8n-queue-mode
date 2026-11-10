@@ -75,7 +75,8 @@ secretKeys:
   encryptionKey: encryption-key
   redisPassword: redis-password
 
-podAnnotations: {}
+podAnnotations:
+  platform.n8n.lab/change: "operate-test-1"
 nodeSelector: {}
 tolerations: []
 affinity: {}
