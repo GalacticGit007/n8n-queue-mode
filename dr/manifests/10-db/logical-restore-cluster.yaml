@@ -1,0 +1,32 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: n8n-db-restore
+  namespace: default
+  annotations:
+    cnpg.io/podPatch: '[{"op":"add","path":"/spec/containers/0/securityContext/appArmorProfile","value":{"type":"Unconfined"}}]'
+
+spec:
+  instances: 1
+
+  imageName: ghcr.io/cloudnative-pg/postgresql:17.11-system-trixie
+
+  enableSuperuserAccess: true
+
+  storage:
+    size: 5Gi
+    storageClass: local-path
+
+  bootstrap:
+    initdb:
+      database: n8n
+      owner: n8n
+      secret:
+        name: n8n-db-credentials
+
+  managed:
+    roles:
+      - name: n8n
+        login: true
+        passwordSecret:
+          name: n8n-db-credentials
