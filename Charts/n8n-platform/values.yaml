@@ -16,7 +16,7 @@ main:
       memory: 1Gi
 
 worker:
-  replicaCount: 1
+  replicaCount: 2
   concurrency: 5
   resources:
     requests:
